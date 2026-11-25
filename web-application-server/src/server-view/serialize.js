@@ -1,2 +1,2 @@
-export function serialzeError(error) {}
-export function serialzeFenError(error) {}
+export function serializeError(error) {}
+export function serializeFenError(error) {}
