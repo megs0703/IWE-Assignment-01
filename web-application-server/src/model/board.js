@@ -100,7 +100,7 @@ class Board {
           file += Number(ch);
           lastWasDigit = true;
         } else {
-          fail("a piece letter (pnbrqkPNBRQK) or a digit (1-8)");
+          fail("a piece letter or a digit (1-8)");
         }
         i++;
       }
@@ -160,7 +160,8 @@ class Board {
       castlingRights.black.queenside = field.includes("q");
     }
 
-    // --- Step 4: en passant: "-" or a file plus rank 6 (w) or 3 (b) ---
+    // --- Step 4: en passant: "-" or a file (a-h) plus a rank (1-8) ----
+    // The tutorial asks to check only this form, not which rank fits.
     readSeparator("castling rights");
     let enPassantSquare;
     if (fen[i] === "-") {
@@ -168,10 +169,9 @@ class Board {
       i++;
     } else {
       if (!(fen[i] >= "a" && fen[i] <= "h")) fail('"-" or a file (a-h) for the en passant square');
-      const epRank = sideToMove === "white" ? "6" : "3";
-      if (fen[i + 1] !== epRank) {
+      if (!(fen[i + 1] >= "1" && fen[i + 1] <= "8")) {
         i++;
-        fail(`rank ${epRank} for the en passant square (${sideToMove} to move)`);
+        fail("a rank (1-8) for the en passant square");
       }
       enPassantSquare = fen.slice(i, i + 2);
       i += 2;

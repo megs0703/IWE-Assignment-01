@@ -113,6 +113,13 @@ check(
   Board.parse("4k3/8/8/8/8/8/8/4K3 w - - 0 1").toFen() === "4k3/8/8/8/8/8/8/4K3 w - - 0 1",
 );
 
+console.log("\n== Valid edge cases from the tutorial ==");
+check("castling Kk is valid", same(Board.parse(`rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kk - 0 1`).castlingRights,
+  { white: { kingside: true, queenside: false }, black: { kingside: true, queenside: false } }));
+check("en passant: any file a-h + rank 1-8 is accepted (form only)",
+  Board.parse("8/8/8/8/8/8/8/8 w - a1 0 1").enPassantSquare === "a1");
+check("large move counters", Board.parse("8/8/8/8/8/8/8/8 b - - 100 250").fullmoveNumber === 250);
+
 // ----------------------------------------------------------------------
 console.log("\n== Invalid FENs ==");
 const S = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"; // start placement
@@ -149,10 +156,13 @@ checkThrows("castling QK (wrong order)", `${S} w QK - 0 1`, FenError, S.length +
 checkThrows("castling KK (repeat)", `${S} w KK - 0 1`, FenError, S.length + 4);
 checkThrows("castling X", `${S} w X - 0 1`, FenError, S.length + 3);
 checkThrows("castling -K", `${S} w -K - 0 1`, FenError, S.length + 4);
+checkThrows("castling K- (- must stand alone)", `${S} w K- - 0 1`, FenError, S.length + 4);
+checkThrows("castling qQ (wrong order)", `${S} w qQ - 0 1`, FenError, S.length + 4);
 
 // 5. En passant
-checkThrows("en passant e3 with white to move", `${S} w KQkq e3 0 1`, FenError, S.length + 9);
-checkThrows("en passant e6 with black to move", `${S} b KQkq e6 0 1`, FenError, S.length + 9);
+checkThrows("en passant rank 9", `${S} w KQkq e9 0 1`, FenError, S.length + 9);
+checkThrows("en passant rank 0", `${S} b KQkq e0 0 1`, FenError, S.length + 9);
+checkThrows("en passant file only", `${S} w KQkq e 0 1`, FenError, S.length + 9);
 checkThrows("en passant file i", `${S} w KQkq i6 0 1`, FenError, S.length + 8);
 checkThrows("en passant e66 (something after)", `${S} w KQkq e66 0 1`, FenError, S.length + 10);
 checkThrows("en passant -x", `${S} w KQkq -x 0 1`, FenError, S.length + 9);
