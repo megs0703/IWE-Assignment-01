@@ -2,8 +2,7 @@
 
 ## Submission
 
-If you use GitLab, link to the tag `submission-portfolio-01` in your repository:
-<!-- Replace this comment with the link before you submit. -->
+If you use GitLab, link to the tag `submission-portfolio-01` in your repository: https://gitlab.hrz.tu-chemnitz.de/mepra-at-tu-chemnitz.de/iwe-portfolio-01/-/tree/submission-portfolio-01
 
 ## Requirements
 
